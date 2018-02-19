@@ -1,6 +1,5 @@
 # Welcome to AndrewArt - the most comprehensive and coherent artistry API!
 
-
 ## Getting started!
 
 ```
@@ -35,3 +34,44 @@ $ npm start
 6) After a successful load, you will want to start the API by running the "npm start" command in your console.
 
 ```
+
+## BASE URL
+https://localhost:4000 welcomes you to the home of the API!
+
+|API|
+|All paintings| =>   |/paintings|
+|Single painting| => |/paintings/:id|
+|All artists| =>     |/artists|
+|Single artist| =>   |/aritsts/:id|
+
+
+## HTTP VERBS
+Here are the verbs included in the API with a brief description of each.
+
+|    VERBS   |	PURPOSE
+|    GET    |   Retrieve a painting / artist
+|   DELETE  |   Delete a painting / artist
+|    PUT    |   Update a painting / artist
+|   POST    |   Create a painting / artist
+
+## SCHEME
+
+AndrewArt uses HTTP to communicate.
+
+## CONTENT TYPE
+
+AndrewArt sends and receives data as JSON, except for the homepage which is HTML.
+
+## HTTP STATUS
+
+200 - Ok: Everything went according to plan.
+
+201 - Created: You successfully created an artist or a painting.
+
+400 - Bad Request: Potential user error, possible incorrect or missing fields.
+
+404 - Not Found: Invalid or incorrect URL.
+
+409 - Conflict: Doc / action already exists and cannot be changed without including ID and REV.
+
+500 - Internal server error: Something went wrong... on the API side.

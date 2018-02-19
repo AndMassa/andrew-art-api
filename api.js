@@ -4,10 +4,13 @@ const app = express()
 const HTTPError = require('node-http-error')
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 4000
+const docFilt = require('./lib/doc-filter')
 
 const {
   not,
-  isEmpty
+  isEmpty,
+  head,
+  last
 } = require('ramda')
 
 
@@ -22,11 +25,9 @@ const {
   updateArtist
 } = require('./dal.js')
 
-
+// Used to clean object //
 const checkFields = require('./lib/required-fields.js')
 const cleanObj = require('./lib/remover.js')
-
-
 const cleaner = cleanObj([
   'name',
   'movement',
@@ -34,8 +35,8 @@ const cleaner = cleanObj([
   'yearCreated',
   'museum'
 ])
-const artCleaner = cleanObj(['name', 'movement', 'born'])
-const artCleanerUpdate = cleanObj([
+const artClean = cleanObj(['name', 'movement', 'born'])
+const artCleanUp = cleanObj([
   '_id',
   '_rev',
   'name',
@@ -43,7 +44,7 @@ const artCleanerUpdate = cleanObj([
   'born',
   'type'
 ])
-const cleanerUpdate = cleanObj([
+const cleanUp = cleanObj([
   '_id',
   '_rev',
   'name',
@@ -53,15 +54,17 @@ const cleanerUpdate = cleanObj([
   'museum',
   'type'
 ])
-const requiredFields = checkFields([
+const reqFields = checkFields([
   'name',
   'movement',
   'artist',
   'yearCreated',
   'museum'
 ])
-const requiredFieldsArtist = checkFields(['born', 'name', 'movement'])
-const requiredFieldsArtistUpdate = checkFields([
+
+// Used to check the fields //
+const reqFieldArt = checkFields(['born', 'name', 'movement'])
+const reqFieldArtUp = checkFields([
   '_id',
   '_rev',
   'born',
@@ -69,7 +72,7 @@ const requiredFieldsArtistUpdate = checkFields([
   'movement',
   'type'
 ])
-const requiredFieldsUpdate = checkFields([
+const reqFieldUp = checkFields([
   '_id',
   '_rev',
   'name',
@@ -95,11 +98,11 @@ const errNextr = next => err =>
 
 // Add a painting //
 app.post('/paintings', (req, res, next) => {
-  if (not(isEmpty(requiredFields(req.body)))) {
+  if (not(isEmpty(reqFields(req.body)))) {
     next(
       new HTTPError(
         400,
-        `You are missing the following required fields: ${requiredFields(req.body)}`
+        `You are missing the following required fields: ${reqFields(req.body)}`
       )
     )
     return
@@ -126,16 +129,16 @@ app.get('/paintings/:id', (req, res, next) => {
 
 // Update a painting //
 app.put('/paintings/:id', (req, res, next) => {
-  if (not(isEmpty(requiredFieldsUpdate(req.body)))) {
+  if (not(isEmpty(reqFieldUp(req.body)))) {
     next(
       new HTTPError(
         400,
-        `You are missing the following required fields: ${requiredFields(req.body)}`
+        `You are missing the following required fields: ${reqFields(req.body)}`
       )
     )
     return
   } else {
-    return updatePainting(cleanerUpdate(req.body))
+    return updatePainting(cleanUp(req.body))
       .then(newPainting => res.send(newPainting))
       .catch(errNextr(next))
   }
@@ -145,16 +148,16 @@ app.put('/paintings/:id', (req, res, next) => {
 
 // Adding an artist //
 app.post('/artists', (req, res, next) => {
-  if (not(isEmpty(requiredFieldsArtist(req.body)))) {
+  if (not(isEmpty(reqFieldArt(req.body)))) {
     next(
       new HTTPError(
         400,
-        `You are missing the following required fields: ${requiredFieldsArtist(req.body)}`
+        `You are missing the following required fields: ${reqFieldArt(req.body)}`
       )
     )
     return
   } else {
-    return addArtist(artCleaner(req.body))
+    return addArtist(artClean(req.body))
       .then(result => res.send(result))
       .catch(errNextr(next))
   }
@@ -176,18 +179,18 @@ app.get('/artists/:id', (req, res, next) => {
 
 // Updating and artist //
 app.put('/artists/:id', (req, res, next) => {
-  if (not(isEmpty(requiredFieldsArtistUpdate(req.body)))) {
+  if (not(isEmpty(reqFieldArtUp(req.body)))) {
     next(
       new HTTPError(
         400,
-        `You are missing the following required fields: ${requiredFieldsArtistUpdate(
+        `You are missing the following required fields: ${reqFieldArtUp(
           req.body
         )}`
       )
     )
     return
   }
-  updateArtist(artCleanerUpdate(req.body))
+  updateArtist(artCleanUp(req.body))
     .then(updatedResult => res.send(updatedResult))
     .catch(errNextr(next))
 })
