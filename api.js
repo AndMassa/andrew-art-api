@@ -82,10 +82,12 @@ const requiredFieldsUpdate = checkFields([
 
 app.use(bodyParser.json())
 
+// Introduction to API //
 app.get('/', function(req, res, next) {
   res.send(`<h1>Welcome to AndrewArt, the magnificent API!</h1>`)
 })
 
+// Function for handling errors //
 const errNextr = next => err =>
   next(new HTTPError(err.status, err.message, err))
 
@@ -147,7 +149,7 @@ app.post('/artists', (req, res, next) => {
     next(
       new HTTPError(
         400,
-        `You are missing the required fields: ${requiredFieldsArtist(req.body)}`
+        `You are missing the following required fields: ${requiredFieldsArtist(req.body)}`
       )
     )
     return
@@ -178,7 +180,7 @@ app.put('/artists/:id', (req, res, next) => {
     next(
       new HTTPError(
         400,
-        `You are missing the required fields: ${requiredFieldsArtistUpdate(
+        `You are missing the following required fields: ${requiredFieldsArtistUpdate(
           req.body
         )}`
       )
@@ -197,4 +199,5 @@ app.use((err, req, res, next) => {
   res.status(err.status).send(err.message)
 })
 
+// Confirmation that API is running on port 4000 //
 app.listen(port, () => console.log('AndrewArt is up and running on port: ', port))

@@ -8,26 +8,38 @@ const { pluck, prop } = require('ramda')
 
 const idCleaner = require('./lib/id-cleaner.js')
 
+// Paintings //
 
-// Consts for adding, deleting, getting and updating 
-
-const addPainting = painting => { // Adds a painting (POST)
+// Adds a painting (POST) //
+const addPainting = painting => {
   painting._id = `painting_${sluggy(idCleaner(painting.name), { lower: true })}`
   painting.type = 'painting'
   return db.put(painting)
 }
-const deletePainting = id => db.get(id).then(painting => db.remove(painting)) // Deletes a painting (DELETE)
-const getPainting = id => db.get(id) // Gets a painting (GET)
-const updatePainting = painting => db.put(painting) // Updates a painting (PUT)
+// Deletes a painting (DELETE) //
+const deletePainting = id => db.get(id).then(painting => db.remove(painting))
+// Retrieves a painting (GET) //
+const getPainting = id => db.get(id)
+// Updates a painting (PUT) //
+const updatePainting = painting => db.put(painting)
 
-const addArtist = artist => { // Adds an artist (POST)
+// Artists //
+
+// Adds an artist (POST) //
+const addArtist = artist => {
   artist._id = `artist_${sluggy(artist.name, { lower: true })}`
   artist.type = 'artist'
   return db.put(artist)
 }
-const deleteArtist = id => db.get(id).then(artist => db.remove(artist)) // Deletes an artist (DELETE)
-const getArtist = id => db.get(id) // Get an artist (GET)
-const updateArtist = artist => db.put(artist) // Update an artist (PUT)
+
+// Deletes an artist (DELETE) //
+const deleteArtist = id => db.get(id).then(artist => db.remove(artist))
+
+// Retrieves an artist (GET) //
+const getArtist = id => db.get(id)
+
+// Update an artist (PUT) //
+const updateArtist = artist => db.put(artist)
 
 
 
