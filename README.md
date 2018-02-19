@@ -6,6 +6,8 @@
 
 1) First you will want to create a database - you can do this by going to Cloudand and signing up for free access, or by using Roo by typing "roo db add (name of your db)".
 
+Please take note of your KEY and SECRET, as you will need them later.
+
 
 ```
 
@@ -17,7 +19,7 @@
 
 ```
 
-4) You will want to establish environmental variables by creating an ".env" file, making sure to include your key and secret in the COUCHDB_URL= field, as well as your port of choice in in the PORT= field.
+4) You will want to establish environmental variables by creating an ".env" file, making sure to include your key and secret in the COUCHDB_URL= field, as well as your port of choice in in the PORT= field.  You can do this in an editor such as Atom, after opening your project folder - right click on it and select "add new file"
 
 Example: COUCHDB_URL=https://key:secret@url
 
@@ -36,7 +38,7 @@ $ npm start
 ```
 
 ## BASE URL
-https://localhost:4000 welcomes you to the home of the API!
+https://localhost:4000 welcomes you to the home of the API!  Here are some basic directories and commands you can run, I have included an example.
 
 |API|
 |All paintings| =>   |/paintings|
@@ -53,6 +55,8 @@ Here are the verbs included in the API with a brief description of each.
 |   DELETE  |   Delete a painting / artist
 |    PUT    |   Update a painting / artist
 |   POST    |   Create a painting / artist
+
+Example: In Postman, copy this into the URL and choose GET to retrieve information about the painting "Guernica" https://localhost:4000/paintings/painting_guernica
 
 ## SCHEME
 
